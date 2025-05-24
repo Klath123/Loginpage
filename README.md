@@ -28,3 +28,18 @@ This is a full-stack web application with a React frontend, FastAPI backend, and
 6. After OTP verification, a JWT token is generated and stored in an HTTP-only cookie.
 7. Users access their profile page, where they can verify their email or logout.
 8. Rate limiting is applied to some endpoints to enhance security.
+
+User registration with email, password, and name input.  
+  ![Registration Page](images/register.png)
+
+- Welcome email sent upon successful registration.
+
+- Login with email and password.  
+  ![Login Page](images/login.png)
+
+- OTP (One-Time Password) sent to the user's email for two-step verification.
+
+- JWT token generation upon login, stored securely in HTTP-only cookies to protect against CSRF and XSS attacks.
+
+- User profile page with email verification option and logout functionality.  
+  ![Profile Page](images/dashboard.png)
