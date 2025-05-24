@@ -5,20 +5,11 @@ from src.utils.auth import generate_password_hash, create_access_token, get_curr
 from src.utils.sendEmail import welcome_email
 from datetime import datetime
 from typing import Annotated
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-
                           
 auth_router = APIRouter() 
 
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
-@limiter.limit("3/minute")
 async def register(user: UserIn, response: Response, background_tasks: BackgroundTasks):
     existing = collection.find_one({"email": user.email})
     if existing:
@@ -112,7 +103,6 @@ async def register(user: UserIn, response: Response, background_tasks: Backgroun
 
 
 @auth_router.post("/login", status_code=status.HTTP_201_CREATED)
-@limiter.limit("5/minute")
 async def login(user: UserLogin, response: Response,background_tasks: BackgroundTasks):
 
     if len(user.email) < 1:
@@ -169,19 +159,16 @@ async def refresh_token(request: Request, response: Response):
     return {"message": "Access token refreshed"}
  
 @auth_router.get("/send-email")
-@limiter.limit("5/minute")
 async def send(background_tasks: BackgroundTasks,current_user: dict = Depends(get_current_user)):
     no = await set_verification_otp(current_user,background_tasks) 
     return no
 
 @auth_router.post("/verify-email")
-@limiter.limit("20/minute")
 async def verify(valid: VerifyOtp,background_task:BackgroundTasks,current_user: dict =  Depends(get_current_user)):
     no = await verify_otp(valid,background_task,current_user) 
     return no
 
 @auth_router.post("/send-password")
-@limiter.limit("5/minute")
 async def reset(current_user: TokenData,background_task:BackgroundTasks):
     no = await reset_password_otp(current_user,background_task)
     return no
@@ -199,7 +186,7 @@ async def new(new_password: ResetPassword):
     return new
 
 @auth_router.post("/verify-login-otp")
-@limiter.limit("5/minute")
+
 async def verify_login_otp(otp_data: VerifyOtp, response: Response):
     current_email = otp_data.email
     current_otp = otp_data.otp
