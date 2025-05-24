@@ -29,17 +29,19 @@ This is a full-stack web application with a React frontend, FastAPI backend, and
 7. Users access their profile page, where they can verify their email or logout.
 8. Rate limiting is applied to some endpoints to enhance security.
 
-User registration with email, password, and name input.  
-  ![Registration Page](images/register.png)
+-User registration with email, password, and name input.  
+  ![Registration Page](images/Register.png)
 
 - Welcome email sent upon successful registration.
 
 - Login with email and password.  
-  ![Login Page](images/login.png)
 
 - OTP (One-Time Password) sent to the user's email for two-step verification.
-
+ ![Login Page](images/Loginotp.png)
 - JWT token generation upon login, stored securely in HTTP-only cookies to protect against CSRF and XSS attacks.
 
 - User profile page with email verification option and logout functionality.  
-  ![Profile Page](images/dashboard.png)
+  ![Profile Page](images/Dashboard.png)
+
+-Option of logout and email verification
+![Email verification](images/verifyotp.png)
